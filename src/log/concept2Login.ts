@@ -23,7 +23,7 @@ const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) =>
   await page.click(
     `body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block`
   )
-  // await page.waitForNavigation({ waitUntil: 'load' })
+  await page.waitForNavigation()
   // await page.waitForTimeout(5000)
   const el = await page.$(`body > div.clean-outer-container > div > form > div.form-errors`)
   if (!el) {
