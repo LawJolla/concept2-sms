@@ -17,6 +17,7 @@ jobs:
           script: |
             cd repos/concept2-sms 
             git pull git@github.com:LawJolla/concept2-sms.git
+            npm install
             npm run build
             pm2 start dist
             echo 'Deployment successful to digital ocean'
