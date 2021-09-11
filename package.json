@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --exit-child ./src/index",
-    "build": "prisma generate && tsc --project ./",
+    "build": "nvm use 16 && prisma generate && tsc --project ./",
     "run": "pm2 start dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
