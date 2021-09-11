@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev --respawn --exit-child ./src/index",
-    "build": "tsc --project ./",
+    "build": "prisma generate && tsc --project ./",
+    "run": "pm2 start dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
