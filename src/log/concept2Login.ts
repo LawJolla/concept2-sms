@@ -50,9 +50,10 @@ const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) =>
 }
 
 const logRow = async ({ distance, page }: { distance: string, page: Page }) => {
+  await page.goto("https://log.concept2.com/log")
   await page.waitForSelector(`#distance`)
   await page.waitForSelector(
-    `body > div.container.default > div > main > section.content > form > div:nth-child(9) > div > button`
+    `body > div.container.default > div > main > section.content > form`
   )
   await page.type(`#distance`, distance)
   // await page.click(
