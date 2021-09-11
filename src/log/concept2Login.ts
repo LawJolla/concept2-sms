@@ -19,6 +19,7 @@ const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) =>
   await page.waitForSelector(`#password`)
   await page.click(`#password`)
   await page.type(`#password`, decryptedPassword)
+  await page.waitForSelector(`body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block`)
   await page.click(
     `body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block`
   )
