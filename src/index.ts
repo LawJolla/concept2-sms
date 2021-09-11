@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import express from 'express';
 
-import parseTwilioWebhook from './src/endpoints/parseTwilioWebhook';
+import parseTwilioWebhook from './endpoints/parseTwilioWebhook';
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
