@@ -34,21 +34,21 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
     res.end()
     return;
   }
-  const { To, Body } = req.body
-  if (!To) {
+  const { To, Body, From } = req.body
+  if (!From) {
     res.sendStatus(403)
     res.end()
     return;
   }
   const twilioMessagingResponse = new MessagingResponse()
-  let user = await prisma.user.findFirst({ where: { phoneNumber: To } })
+  let user = await prisma.user.findFirst({ where: { phoneNumber: From } })
   if (!user?.phoneNumber) {
     if (!Body.toLowerCase().includes("row")) {
       console.log("close")
       res.end()
       return;
     }
-    user = await prisma.user.create({ data: { phoneNumber: To } })
+    user = await prisma.user.create({ data: { phoneNumber: From } })
     res.writeHead(200, { 'Content-Type': 'text/xml' })
     res.end(twilioMessagingResponse.message(`Welcome to Milo Fitness Factory's 🍂 🚣‍♀️ challenge!\n\nPlease enter your username (not email) on Concept2's website with correct capitalization.\n\n(Caution... Phones and autocorrect love to capitalize the first letter in a word)`).toString())
     return;
@@ -64,7 +64,7 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
     // is password validated?
     if (!user.password) {
       const encryptedPassword = cryptography.encrypt(Body, process.env.SERVER_SECRET || ``)
-      user = await prisma.user.update({ where: { phoneNumber: To }, data: { password: encryptedPassword } })
+      user = await prisma.user.update({ where: { phoneNumber: From }, data: { password: encryptedPassword } })
       res.writeHead(200, { 'Content-Type': 'text/xml' })
       res.end(twilioMessagingResponse.message(`Please confirm.\n\nUsername: ${user.userName}\nPassword: ${Body}\n\nReply "Y" if correct, "N" if not correct`).toString())
       return;
