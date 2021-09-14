@@ -50,7 +50,7 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
     }
     user = await prisma.user.create({ data: { phoneNumber: To } })
     res.writeHead(200, { 'Content-Type': 'text/xml' })
-    res.end(twilioMessagingResponse.message(`Welcome to Milo Fitness Factory's fall rowing challenge!\n\nPlease enter your username (not email) on Concept2's website with correct capitalization.\n(Beware... Phones and autocorrect love to capitalize the first letter in a word)`).toString())
+    res.end(twilioMessagingResponse.message(`Welcome to Milo Fitness Factory's 🍂 🚣‍♀️ challenge!\n\nPlease enter your username (not email) on Concept2's website with correct capitalization.\n\n(Caution... Phones and autocorrect love to capitalize the first letter in a word)`).toString())
     return;
   }
   try {
@@ -58,7 +58,7 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
     if (!user.userName) {
       user = await prisma.user.update({ where: { phoneNumber: user.phoneNumber }, data: { userName: Body } })
       res.writeHead(200, { 'Content-Type': 'text/xml' })
-      res.end(twilioMessagingResponse.message(`Username ${Body} saved.\n\nPlease enter your password with correct capitalization.\n(Beware... Phones and autocorrect love to capitalize the first letter in a word)`).toString())
+      res.end(twilioMessagingResponse.message(`Username ${Body} saved.\n\nPlease enter your password with correct capitalization.\n\n(Again, caution... Phones and autocorrect love to capitalize the first letter in a word)`).toString())
       return;
     }
     // is password validated?
@@ -127,10 +127,12 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
       }
     })
     res.writeHead(200, { 'Content-Type': 'text/xml' })
-    res.end(twilioMessagingResponse.message(`${distance} meters logged!\n\nNow get back on the rower and log more... ❤️`).toString())
+    res.end(twilioMessagingResponse.message(`${distance} meters logged! 🚣‍♀️🚣‍♀️🚣‍♀️\n\nCome back soon, we have a challenge to win ❤️`).toString())
     return;
   } catch (e) {
-    console.log("error3", e)
+    console.error("error top", e)
+    res.writeHead(200, { 'Content-Type': 'text/xml' })
+    res.end(twilioMessagingResponse.message(`There was an error.  I'll let Dennis know and he'll get it fixed.`).toString())
   }
 }
 
