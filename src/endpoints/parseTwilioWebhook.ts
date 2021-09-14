@@ -127,7 +127,8 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
       }
     })
     res.writeHead(200, { 'Content-Type': 'text/xml' })
-    res.end(twilioMessagingResponse.message(`${distance} meters logged! 🚣‍♀️🚣‍♀️🚣‍♀️\n\nCome back soon, we have a challenge to win ❤️`).toString())
+    const rows = [...Array(parseInt(String(distance / 500)))].map((_, i) => `🚣‍♀️`).join(" ")
+    res.end(twilioMessagingResponse.message(`${distance} meters logged!\n${rows}\n\nCome back soon, we have a challenge to win ❤️`).toString())
     return;
   } catch (e) {
     console.error("error top", e)
