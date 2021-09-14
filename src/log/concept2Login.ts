@@ -19,11 +19,12 @@ const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) =>
   await page.waitForSelector(`#password`)
   await page.click(`#password`)
   await page.type(`#password`, decryptedPassword)
-  await page.waitForSelector(`body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block`)
-  await page.click(
-    `body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block`
-  )
-  await page.waitForNavigation()
+
+await Promise.all([
+      page.click("body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block"),
+      page.waitForNavigation({ waitUntil: 'networkidle0' }),
+]);
+ 
   // await page.waitForTimeout(5000)
   const el = await page.$(`body > div.clean-outer-container > div > form > div.form-errors`)
   if (!el) {
