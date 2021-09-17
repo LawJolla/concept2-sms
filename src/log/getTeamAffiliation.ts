@@ -20,10 +20,10 @@ const getTeamAffiliation = async ({ username, password }: { username: string, pa
   }
 }
 
-const test = async () => {
-  const team = await getTeamAffiliation({ username: "LawJolla", password: "ilovecato1" })
-  console.log("team", team)
-}
+// const test = async () => {
+//   const team = await getTeamAffiliation({ username: "LawJolla", password: "ilovecato1" })
+//   console.log("team", team)
+// }
 
-test()
+// test()
 export default getTeamAffiliation
