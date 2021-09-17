@@ -136,7 +136,7 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
       if (user.userName && user.password) {
         const team = await getTeamAffiliation({ username: user?.userName, password: user?.password })
         user = await prisma.user.update({
-          where: { phoneNumber: user.phoneNumber }, data: team
+          where: { phoneNumber: user.phoneNumber }, data: { ...team }
         })
       }
     }

@@ -1,4 +1,5 @@
 import puppeteer, { Page } from "puppeteer"
+import ordinal from "ordinal"
 
 const individualStats = async ({ name, teamLink, teamName }: { name: string, teamLink: string, teamName: string }) => {
   let browser
@@ -22,7 +23,7 @@ const individualStats = async ({ name, teamLink, teamName }: { name: string, tea
       }
     }));
     const user = rowers.find(r => r.name === name)
-    const text = `At ${teamName} you are 🚣‍♀️ number ${user?.rank} with ${user?.distance}\n\n${rowers.slice(0, 10).map(r => `${r.rank}. ${r.distance}, ${r.name}`).join("\n")}\n🚣‍♀️🚣‍♀️🚣‍♀️`
+    const text = `At ${teamName} you are 🚣‍♀️ ${user?.rank && ordinal(Number(user.rank))} with ${user?.distance}\n\n${rowers.slice(0, 10).map(r => `${r.rank}. ${r.distance}, ${r.name}`).join("\n")}\n🚣‍♀️🚣‍♀️🚣‍♀️`
     await browser?.close()
     return { rowers, user, text }
   } catch (e) {

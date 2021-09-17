@@ -1,3 +1,4 @@
+import ordinal from "ordinal"
 import puppeteer, { Page } from "puppeteer"
 
 const competitionStats = async ({ team }: { team: string }) => {
@@ -48,8 +49,8 @@ const competitionStats = async ({ team }: { team: string }) => {
 
     }
 
-    const text = `We are number ${x.team?.rank} overall and ${x.teamInType?.rank} in the ${x.teamInType?.type} group with ${x.team?.distance}
-    \n\nTop 5 in ${x.teamInType?.type}\n${x.top5ByType.map(t => `${t.rank}: ${t.distance}, ${t.name}`).join("\n")}
+    const text = `We are ${x.team?.rank && ordinal(Number(x.team?.rank))} overall and ${x.teamInType?.rank && ordinal(Number(x.teamInType?.rank))} in the ${x.teamInType?.type} group with ${x.team?.distance}
+    \n\nTop 5 in ${x.teamInType?.type}\n${x.top5ByType.map(t => `${t.rank}. ${t.distance}, ${t.name}`).join("\n")}
     `
     return { data: x, text }
   } catch (e) {
