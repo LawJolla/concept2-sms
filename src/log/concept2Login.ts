@@ -1,5 +1,8 @@
 import puppeteer, { Page } from "puppeteer"
 import { cryptography } from "../lib/crypto"
+import competitionStats from "./competitionStats"
+import getTeamAffiliation from "./getTeamAffiliation"
+import individualStats from "./individiualStats"
 
 
 interface ILogin {
@@ -9,7 +12,8 @@ interface ILogin {
 }
 
 const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) => {
-  const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
+  // const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
+  const decryptedPassword = password
   const browser = await puppeteer.launch({ headless: true })
   const page = await browser.newPage()
   try {
@@ -67,7 +71,7 @@ const logRow = async ({ distance, page }: { distance: string, page: Page }) => {
     // )
     await page.$eval(
       "body > div.container.default > div > main > section.content > form",
-      (form) => form.submit()
+      (form: any) => form.submit()
     )
     return { success: true, page }
   } catch (e: any) {
@@ -88,10 +92,12 @@ const logConcept2Row = async ({ distance, username, password }: ILogRow) => {
     }
     var { success, page } = await logRow({ distance, page })
     // check if worked
-    await browser.close()
+
     // if success return { status: "success" }
+    await browser.close()
     return { loginSuccess: true, logSuccess: true }
   } catch (e) {
+    await browser.close()
     return { loginSuccess: true, logSuccess: false, error: "Oops, there was a problem logging your meters.  I'll let Dennis know." }
   }
 }

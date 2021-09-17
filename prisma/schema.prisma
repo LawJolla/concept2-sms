@@ -17,6 +17,10 @@ model User {
   phoneNumber String @unique
   userName String?
   password String?
+  name String?
+  userProfile String?
+  teamName String?
+  teamLink String?
   isLoginValid Boolean @default(false)
   logs Log[]
 }

@@ -1,8 +1,11 @@
 import { Request, Response } from "express"
 import validateTwilio from "../lib/validateTwilio"
-import { MessagingResponse } from "../lib/twilio"
+import twilioClient, { MessagingResponse } from "../lib/twilio"
 import { logConcept2Row, loginConcept2 } from "../log/concept2Login"
 import { cryptography } from "../lib/crypto"
+import getTeamAffiliation from "../log/getTeamAffiliation"
+import competitionStats from "../log/competitionStats"
+import individualStats from "../log/individiualStats"
 
 const exampleSms = {
   ToCountry: 'US',
@@ -129,6 +132,36 @@ const parseTwilioWebhook = async (req: Request, res: Response) => {
     res.writeHead(200, { 'Content-Type': 'text/xml' })
     const rows = [...Array(parseInt(String(distance / 500)))].map((_, i) => `🚣‍♀️`).join(" ")
     res.end(twilioMessagingResponse.message(`${distance} meters logged!\n${rows}\n\nCome back soon, we have a challenge to win ❤️`).toString())
+    if (!user.name) {
+      if (user.userName && user.password) {
+        const team = await getTeamAffiliation({ username: user?.userName, password: user?.password })
+        user = await prisma.user.update({
+          where: { phoneNumber: user.phoneNumber }, data: team
+        })
+      }
+    }
+    if (user.teamName) {
+      const team = await competitionStats({ team: user.teamName })
+      if (team?.text.length) {
+        twilioClient.messages
+          .create({
+            body: team.text,
+            from: To,
+            to: From
+          })
+      }
+    }
+    if (user.name && user.teamLink && user.teamName) {
+      const individual = await individualStats({ name: user.name, teamLink: user.teamLink, teamName: user.teamName })
+      if (individual?.text.length) {
+        twilioClient.messages
+          .create({
+            body: individual.text,
+            from: To,
+            to: From
+          })
+      }
+    }
     return;
   } catch (e) {
     console.error("error top", e)
