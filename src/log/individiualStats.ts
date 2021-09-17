@@ -8,7 +8,7 @@ const individualStats = async ({ name, teamLink, teamName }: { name: string, tea
       'ignoreHTTPSErrors': true
     })
     const page = await browser.newPage()
-    await page.goto(teamLink)
+    await page.goto(`${teamLink}/ftc/2022`)
     await page.waitForSelector(`body > div.container.default > div > main > section.content > table > tbody`, { timeout: 2000 })
     // @ts-ignore
     // let bodyHTML = await page.evaluate(() => document?.body?.innerHTML);
@@ -26,7 +26,7 @@ const individualStats = async ({ name, teamLink, teamName }: { name: string, tea
     await browser?.close()
     return { rowers, user, text }
   } catch (e) {
-    console.log(e)
+    console.log("[individualStats]", e)
     await browser?.close()
   }
 }

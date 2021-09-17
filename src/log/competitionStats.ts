@@ -24,7 +24,6 @@ const competitionStats = async ({ team }: { team: string }) => {
       }
     }));
     const t = teams.find(r => r.name === team)
-    console.log("t", t)
     await page.goto(`https://log.concept2.com/challenges/ftc/2022/teams?type=${t?.type.split(`/`)[0].toLowerCase()}&subtype=all&size=all`)
     await page.waitForSelector(`body > div.container.default > div > main > section.content > table > tbody`, { timeout: 10000 })
     // @ts-ignore
@@ -52,10 +51,9 @@ const competitionStats = async ({ team }: { team: string }) => {
     const text = `We are number ${x.team?.rank} overall and ${x.teamInType?.rank} in the ${x.teamInType?.type} group with ${x.team?.distance}
     \n\nTop 5 in ${x.teamInType?.type}\n${x.top5ByType.map(t => `${t.rank}: ${t.distance}, ${t.name}`).join("\n")}
     `
-    console.log(text)
     return { data: x, text }
   } catch (e) {
-    console.log(e)
+    console.log("[competitionStats]", e)
     await browser?.close()
   }
 }

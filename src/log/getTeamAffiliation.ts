@@ -16,7 +16,7 @@ const getTeamAffiliation = async ({ username, password }: { username: string, pa
     })
     return team
   } catch (e) {
-    throw new Error(`Error getting team affiliate`)
+    console.log(`[getTeamAffiliation]`, e)
   }
 }
 
