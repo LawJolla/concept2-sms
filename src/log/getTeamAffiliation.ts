@@ -10,8 +10,10 @@ const getTeamAffiliation = async ({ username, password }: { username: string, pa
       return {
         name: document.querySelector(`body > div.container.default > div > main > section.content > h2:nth-child(1)`)?.innerHTML,
         userProfile: document.querySelector(`body > div.container.default > div > main > section.content > p:nth-child(2) > a:nth-child(1)`)?.getAttribute(`href`)?.split(`/`)?.[4],
-        teamName: document.querySelector(`body > div.container.default > div > main > section.content > p:nth-child(3) > a:nth-child(9)`)?.innerHTML,
-        teamLink: document.querySelector(`body > div.container.default > div > main > section.content > p:nth-child(3) > a:nth-child(9)`)?.getAttribute("href")
+        teamName: "Milo Fitness Factory",
+        // teamName: document.querySelector(`body > div.container.default > div > main > section.content > p:nth-child(3) > a:nth-child(9)`)?.innerHTML,
+        teamLink: "https://log.concept2.com/team/10547"
+        // teamLink: document.querySelector(`body > div.container.default > div > main > section.content > p:nth-child(3) > a:nth-child(9)`)?.getAttribute("href")
       }
     })
     return team
