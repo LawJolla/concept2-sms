@@ -12,8 +12,8 @@ interface ILogin {
 }
 
 const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) => {
-  // const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
-  const decryptedPassword = "ilovecato2"
+  const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
+  // const decryptedPassword = "ilovecato2"
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
   try {
