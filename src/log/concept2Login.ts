@@ -12,9 +12,9 @@ interface ILogin {
 }
 
 const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) => {
-  const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
-  // const decryptedPassword = password
-  const browser = await puppeteer.launch({ headless: true })
+  // const decryptedPassword = cryptography.decrypt(password, process.env.SERVER_SECRET || ``)
+  const decryptedPassword = "ilovecato2"
+  const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
   try {
 
@@ -25,34 +25,28 @@ const loginConcept2 = async ({ username, password, cleanup = false }: ILogin) =>
     await page.waitForSelector(`#password`)
     await page.click(`#password`)
     await page.type(`#password`, decryptedPassword)
+    try {
+      await Promise.all([
+        page.click("body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block"),
+        // page.waitForNavigation({ waitUntil: 'networkidle2' }),
+        await page.waitForResponse(response => response.url() === 'https://log.concept2.com/log' && response.status() === 200, { timeout: 5000 })
+      ]);
 
-    await Promise.all([
-      page.click("body > div.clean-outer-container > div > form > input.btn.btn-primary.btn-block"),
-      page.waitForNavigation({ waitUntil: 'networkidle0' }),
-    ]);
+    } catch (e) {
+      console.log("login error", username, e)
+      await browser.close()
+      return { success: false, page, browser };
+    }
 
-    // await page.waitForTimeout(5000)
-    const el = await page.$(`body > div.clean-outer-container > div > form > div.form-errors`)
-    if (!el) {
-      if (cleanup) {
-        await browser.close()
-      }
-      return { success: true, page, browser }
-    }
-    const loginError = await page.evaluate(p => p.textContent, el);
-    if (loginError.toLowerCase().includes(`incorrect`)) {
-      console.log("login failed", username, decryptedPassword)
-      if (cleanup) {
-        await browser.close()
-      }
-      return { success: false, page, browser }
-    }
+
+
     // validate login
     if (cleanup) {
       await browser.close()
     }
     return { success: true, page, browser }
   } catch (e) {
+    await browser.close()
     return { success: false, page, browser };
   }
 
@@ -97,10 +91,9 @@ const logConcept2Row = async ({ distance, username, password }: ILogRow) => {
     await browser.close()
     return { loginSuccess: true, logSuccess: true }
   } catch (e) {
-    await browser.close()
     return { loginSuccess: true, logSuccess: false, error: "Oops, there was a problem logging your meters.  I'll let Dennis know." }
   }
 }
 
 export { logConcept2Row, loginConcept2 }
-// loginConcept2({ username: "LawJolla", password: "2cjusRCieT8AtiOSeq3vVQtEQ/1zcY1V0VbUk98NxfLT215bGUT3tESJ5T6CCOCptf1ncrpf/lXsG0+B04Af442k5oEjqxnWxMbVSVaC3w3X4XupdMHuJjxPL+8WPcjQu/DPc7ALa3L1JA==" })
+// loginConcept2({ username: "LawJolla", password: "kIX7tO2VcrtCBGZxVLPc1EkyIBOvkMC8meYLVcNSV7NylOczlokd2tl8TmA1RLy4/QMCjLEFVxq5kVn0qYvmvu/SwKkvJlGh6oJIoca4BAaTtlbAlr+W+9u0wmFKVZo3lmVSDeZAEKz55A==" })
